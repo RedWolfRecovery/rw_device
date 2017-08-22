@@ -1,6 +1,5 @@
 /*
    Copyright (c) 2013, The Linux Foundation. All rights reserved.
-
    Redistribution and use in source and binary forms, with or without
    modification, are permitted provided that the following conditions are
    met:
@@ -13,7 +12,6 @@
     * Neither the name of The Linux Foundation nor the names of its
       contributors may be used to endorse or promote products derived
       from this software without specific prior written permission.
-
    THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED
    WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT
@@ -42,11 +40,12 @@ void vendor_load_properties()
 	if ( boardID == "0" ) {
 		property_set("ro.product.model", "Redmi Note 3 Special Edition");
 		property_set("ro.product.device", "kate");
+		property_set("ro.build.description", "kate-user 6.0.1 MMB29M V8.1.6.0.MHOMIDI release-keys");
 	}
-
 	/* default to Redmi Note 3 */
 	else {
 		property_set("ro.product.model", "Redmi Note 3");
 		property_set("ro.product.device", "kenzo");
+		property_set("ro.build.description", "kenzo-user 6.0.1 MMB29M V8.1.6.0.MHOMIDI release-keys");
 	}
 }

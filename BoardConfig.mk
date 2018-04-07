@@ -95,6 +95,3 @@ TW_INCLUDE_FUSE_EXFAT := true
 
 # NTFS Support
 TW_INCLUDE_FUSE_NTFS := true
-
-# RedWolf
-DEVICE_HAS_2GB_VARIANT := true

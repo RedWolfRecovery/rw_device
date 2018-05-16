@@ -1,51 +1,68 @@
 /*
-   Copyright (c) 2013, The Linux Foundation. All rights reserved.
-   Redistribution and use in source and binary forms, with or without
-   modification, are permitted provided that the following conditions are
-   met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following
-      disclaimer in the documentation and/or other materials provided
-      with the distribution.
-    * Neither the name of The Linux Foundation nor the names of its
-      contributors may be used to endorse or promote products derived
-      from this software without specific prior written permission.
-   THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED
-   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT
-   ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS
-   BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
-   BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-   WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-   OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-   IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+  Copyright (C) 2015-2018 The Android Open Source Project
 
-#include <stdlib.h>
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-#include "vendor_init.h"
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+
+  This contains the module build definitions for the hardware-specific
+  components for this device.
+
+  As much as possible, those components should be built unconditionally,
+  with device-specific names to avoid collisions, to avoid device-specific
+  bitrot and build breakages. Building a component unconditionally does
+  *not* include it on all devices, so it is safe even with hardware-specific
+  components.
+*/
+
+#include <cstdlib>
+#include <unistd.h>
+#include <fcntl.h>
+#include <string>
+#include <android-base/properties.h>
+
 #include "property_service.h"
-#include "util.h"
+#include "log.h"
 
-void vendor_load_properties()
-{
+using android::base::GetProperty;
+using android::init::property_set;
 
-	std::string boardID = property_get("ro.boot.boardID");
+namespace android {
+namespace init {
 
-	/* Redmi Note 3 Special Edition */
-	if ( boardID == "0" ) {
-		property_set("ro.product.model", "Redmi Note 3 Special Edition");
-		property_set("ro.product.device", "kate");
-		property_set("ro.build.description", "kate-user 6.0.1 MMB29M V8.1.6.0.MHOMIDI release-keys");
-	}
-	/* default to Redmi Note 3 */
-	else {
-		property_set("ro.product.model", "Redmi Note 3");
-		property_set("ro.product.device", "kenzo");
-		property_set("ro.build.description", "kenzo-user 6.0.1 MMB29M V8.1.6.0.MHOMIDI release-keys");
-	}
+void vendor_load_properties() {
+    std::string boardID = GetProperty("ro.boot.boardID", "");
+
+    if (boardID == "0") {
+        /* If ro.boot.boardID=0, set as kate */
+        property_set("ro.product.brand", "Xiaomi");
+        property_set("ro.product.manufacturer", "Xiaomi");
+        property_set("ro.product.model", "Redmi Note 3");
+        property_set("ro.product.device", "kate");
+        property_set("ro.product.name", "kate");
+        property_set("ro.build.fingerprint", "Xiaomi/kate/kate:6.0.1/MMB29M/V9.5.4.0.MHRMIFA:user/release-keys");
+        property_set("ro.build.description", "kate-user 6.0.1 MMB29M V9.5.4.0.MHRMIFA release-keys");
+    }
+
+    else {
+        /* Otherwise, set as kenzo */
+        property_set("ro.product.brand", "Xiaomi");
+        property_set("ro.product.manufacturer", "Xiaomi");
+        property_set("ro.product.model", "Redmi Note 3");
+        property_set("ro.product.device", "kenzo");
+        property_set("ro.product.name", "kenzo");
+        property_set("ro.build.fingerprint", "Xiaomi/kenzo/kenzo:6.0.1/MMB29M/V9.5.3.0.MHOMIFA:user/release-keys");
+        property_set("ro.build.description", "kenzo-user 6.0.1 MMB29M V9.5.3.0.MHOMIFA release-keys");
+    }
 }
+}  // namespace init
+}  // namespace android
